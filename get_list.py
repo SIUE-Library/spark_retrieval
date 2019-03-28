@@ -10,10 +10,13 @@ for c in cats:
     n = 1
     r = get("https://spark.siue.edu/"+c+"/index.html")
     while str(r) != '<Response [404]>':
-'''
+
         #match all links in r
-        link = r'<a href="https:\/\/spark\.siue\.edu\/.{1,41}\d{1,4}"'
+        link = r'<a href="https:\/\/spark\.siue\.edu\/.{1,41}\d{1,4}".{1,100}<\/a>, .{10,80}<\/p>'
         m = re.findall(link, r.text, re.I|re.M)
+        for l in m:
+            print(c+"|"+l.split('" >')[1].replace("</p>", "").replace("</a>", ""))
+        '''
         for line in m:
             if len(re.findall(r'index.\d?.?html', line)) == 0:
 
@@ -22,7 +25,8 @@ for c in cats:
 
                 p = p.replace('" by', ' by')
                 print(c+"\t"+str(p))
+        '''
 
         n+=1
+
         r = get("https://spark.siue.edu/"+c+"/index."+str(n)+".html")
-'''

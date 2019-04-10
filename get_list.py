@@ -6,16 +6,36 @@ cats = ["accounting_fac", "anthro_fac", "artanddesign_fac", "bio_fac", "bot", "b
 
 cats = sorted(cats)
 
+
+
 for c in cats:
     n = 1
     r = get("https://spark.siue.edu/"+c+"/index.html")
     while str(r) != '<Response [404]>':
-
+        t = ""
         #match all links in r
-        link = r'<a href="https:\/\/spark\.siue\.edu\/.{1,41}\d{1,4}".{1,100}<\/a>, .{10,80}<\/p>'
+        link = r'<a href="https:\/\/spark\.siue\.edu\/.{1,150}\d{1,4}".{1,200}<\/a>, .{10,100}<\/p>'
         m = re.findall(link, r.text, re.I|re.M)
+
+        '''
+        if c == "siue_fac":
+            #go deeper and check the dept
+            for line in m:
+                #print(line)
+                temp = re.findall(r'<a href=".{1,41}\d{1,4}" >', line)
+
+                if len(temp) > 0:
+                    t = get(str(line)[9:].split('" >')[0])
+                    print(t.url)
+                    p = re.findall(r'<h4>Department<\/h4>\n<p>.{1,30}<\/p>', t.text)[0]
+
+                    t = p
+                    print(t)
+
+        '''
+
         for l in m:
-            print(c+"|"+l.split('" >')[1].replace("</p>", "").replace("</a>", ""))
+            print(c+"\t"+l.split('" >')[1].replace("</p>", "").replace("</a>", "")+t)
         '''
         for line in m:
             if len(re.findall(r'index.\d?.?html', line)) == 0:

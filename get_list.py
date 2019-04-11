@@ -19,34 +19,26 @@ for c in cats:
         if c == "siue_fac":
             #go deeper and check the dept
             for line in m:
-                #print(line)
                 temp = re.findall(r'<a href=".{1,41}\d{1,4}" >', line)
 
                 if len(temp) > 0:
+                    temp = t
                     t = get(str(line)[9:].split('" >')[0])
-                    print(t.url)
                     p = re.findall(r'<h4>Department<\/h4>\n<p>.{1,55}<\/p>', t.text)
                     if len(p) > 0:
                         p = p[0]
-                        t = str(p[23:-4])
-                        print(t)
+                        p = str(p[23:-4])
+                        #map p to bept code?
+                        print(t.url + "\t"+c+"\t"+line.split('" >')[1].replace("</p>", "").replace("</a>", "")+"\t"+p)
+
                     elif "siue_fac" in t.url:
-                        print("\tNo Dept\n")
+                        print(t.url + "\t"+c+"\t"+line.split('" >')[1].replace("</p>", "").replace("</a>", "")+"\tNo Dept Detected")
                     else:
-                        print("\tThis one has no Dept listed but it was originally submitted to something else\n")
+                        print(t.url + "\t"+c+"\t"+line.split('" >')[1].replace("</p>", "").replace("</a>", "")+"\t"+t.url.split("/")[3])
+
         else:
             for l in m:
-                print(c+"\t"+l.split('" >')[1].replace("</p>", "").replace("</a>", "")+t)
-        '''
-        for line in m:
-            if len(re.findall(r'index.\d?.?html', line)) == 0:
-
-                t = get(str(line)[9:-1]).text
-                p = re.findall(r'>.{10,150}<\/p>', t)[0][1:-4]
-
-                p = p.replace('" by', ' by')
-                print(c+"\t"+str(p))
-        '''
+                print(r.url + "\t"+c+"\t"+l.split('" >')[1].replace("</p>", "").replace("</a>", "")+"\t")
 
         n+=1
 

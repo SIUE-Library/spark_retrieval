@@ -6,6 +6,8 @@ cats = ["accounting_fac", "anthro_fac", "artanddesign_fac", "bio_fac", "ce_fac",
 
 cats = sorted(cats)
 
+deptMap = []
+
 for c in cats:
     n = 1
     r = get("https://spark.siue.edu/"+c+"/index.html")
